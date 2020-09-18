@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 23, 2020, 6:35:54 PM
+    Author     : admin
+*/
+
+
+.page-header {
+    margin-top: 70px;
+    font: 14px sans-serif;
+    text-align: center; 
+}
+
+body  {
+    background-image: url("../img/bg-sky.jpg");
+    color: #ffffff;
+}
