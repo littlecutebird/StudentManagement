@@ -43,9 +43,29 @@ mysqli_close($db_connection);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/mycss.css">
 </head>
 <body>
-
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.php"><img src='img/cat-logo.jpg' alt='website logo' height='30' width='30'></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="listExercise.php"><?php if ($_SESSION['type'] == 'teacher') echo 'Add homework'; else echo 'Homework';?></a></li>
+                <li><a href="listChallenge.php"><?php if ($_SESSION['type'] == 'teacher') echo 'Add challenge'; else echo 'Challenge';?></a></li>
+                <li><a href="listUser.php">List user</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="profile.php?username=<?php echo $_SESSION['username']?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-header">
+        <h1>My profile</h1>
+    </div>
     <div class="container">
         <h1>Profile</h1>
         <p>Full name: <?php echo $fullname; ?></p>
@@ -56,6 +76,7 @@ mysqli_close($db_connection);
     
     <div class="container">
         <a href="editProfile.php" class="btn btn-primary">Edit profile</a>
+        <a href="changePassword.php" class="btn btn-info">Change password</a>
     </div>
 
 </body>

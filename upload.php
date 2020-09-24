@@ -1,54 +1,60 @@
+<?php
 
-  <?php
-    if (!isset($_POST["submit"])) {
-        http_response_code(404);
-        exit;
-    }
+// Return empty if upload success, else return error
+$upload_err = '';
+
+// Upload file homework
+if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-//    // Check if image file is a actual image or fake image
-//   
-//    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-//    if($check !== false) {
-//      echo "File is an image - " . $check["mime"] . ".";
-//      $uploadOk = 1;
-//    } else {
-//      echo "File is not an image.";
-//      $uploadOk = 0;
-//    }
+    $fileName = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_FILENAME);
+    $fileType = strtolower(pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION));
+    $increment = '';
     
-
-    // Check if file already exists
-    if (file_exists($target_file)) {
-      echo "Sorry, file already exists.";
-      $uploadOk = 0;
-    }
+    // Rename if file exist. For example file.txt -> file1.txt -> file2.txt -> ...
+    while(file_exists($target_dir. $fileName . $increment . '.' . $fileType)) {
+        $increment++;
+    }   
+    $target_file = $target_dir. $fileName . $increment . '.' . $fileType;
 
     // Check file size
     if ($_FILES["fileToUpload"]["size"] > 50000000000) {
-      echo "Sorry, your file is too large.";
-      $uploadOk = 0;
+        $upload_err = "Sorry, your file is too large.";
     }
-
+    else
     // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" && $imageFileType != "txt") {
-      echo "Sorry, only JPG, JPEG, PNG & GIF & txt files are allowed.";
-      $uploadOk = 0;
+    if($fileType != "jpg" && $fileType != "png" && $fileType != "jpeg"
+    && $fileType != "gif" && $fileType != "txt" && $fileType != 'pdf') {
+        $upload_err = "Sorry, only JPG, JPEG, PNG & GIF & txt & PDF files are allowed.";
     }
 
     // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-      echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
-    } else {
-      if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-      } else {
-        echo "Sorry, there was an error uploading your file.";
-      }
+    if (empty($upload_err)) move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file); 
+}
+
+// Upload file challenge (txt)
+if (isset($_POST['submitChallenge'])) {
+    $target_dir = "challenge/";
+    $fileName = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_FILENAME);
+    $fileType = strtolower(pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION));
+    $target_file = $target_dir. $fileName . '.' . $fileType;
+    
+    // Rename if file exist. For example file.txt -> file1.txt -> file2.txt -> ...
+    if (file_exists($target_file)) {
+        $upload_err = "Challenge exists! Maybe you should rename the file?";
+    }   
+    else
+    // Check file size
+    if ($_FILES["fileToUpload"]["size"] > 50000000000) {
+        $upload_err = "Sorry, your file is too large.";
     }
-    ?>
+    else
+    // Allow certain file formats
+    if($fileType != "txt") {
+        $upload_err = "Sorry, only txt files are allowed for challenge.";
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if (empty($upload_err)) move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file); 
+}
+  
+?>

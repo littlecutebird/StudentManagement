@@ -19,3 +19,7 @@ body  {
     background-image: url("../img/bg-sky.jpg");
     color: #ffffff;
 }
+
+input, textarea {
+    color: #000000;
+}

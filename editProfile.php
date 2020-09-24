@@ -78,11 +78,30 @@ mysqli_close($db_connection);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/mycss.css">
 </head>
 <body>
-
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.php"><img src='img/cat-logo.jpg' alt='website logo' height='30' width='30'></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="listExercise.php"><?php if ($_SESSION['type'] == 'teacher') echo 'Add homework'; else echo 'Homework';?></a></li>
+                <li><a href="listChallenge.php"><?php if ($_SESSION['type'] == 'teacher') echo 'Add challenge'; else echo 'Challenge';?></a></li>
+                <li><a href="listUser.php">List user</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="profile.php?username=<?php echo $_SESSION['username']?>"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+     <div class="page-header">
+        <h1>Edit profile</h1>
+    </div>
     <div class="container">
-        <h2>Edit profile</h2>
         <form action="editProfile.php" method="post">
             <div class="form-group">
                 <label>Full name: </label>
@@ -99,7 +118,7 @@ mysqli_close($db_connection);
                 <input class="form-control" type="tel" name="phoneNumber" value="<?php echo $phoneNumber;?>" pattern="[0-9]{7,10}">
                 <span class="help-block"><?php echo $phoneNumber_err; ?></span>
             </div>
-            <button class="btn btn-default">Confirm</button>
+            <button class="btn btn-success" type='submit'>Confirm</button>
         </form>
          <?php
             if (isset($update_success) && $update_success) {

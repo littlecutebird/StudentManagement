@@ -52,11 +52,10 @@ if (isset($_POST["submit"])) {
 
             // Execute SQL statement
             if (mysqli_stmt_execute($stmt)) {
-
+                $upload_err = 'Upload homework success';
             }
             else {
-                echo "Cannot execute SQL query";
-                exit;
+                exit("Cannot execute SQL query");
             }
         mysqli_stmt_close($stmt);
     }
@@ -95,19 +94,32 @@ mysqli_close($db_connection);
             <h1>Submit homework</h1>
         </div>
         <div class='container'>
-            <h2><?= $row['title'] ?></h2>
-            <p><?= $row['description'] ?></p>
-            <p>Modified time: <?= $row['modified_time'] ?></p>
-            <p>Deadline: <?= $row['deadline'] ?></p>
-            <form action='' method='post' enctype='multipart/form-data'>
-                Select file to upload:
-                <input type="file" name="fileToUpload" id="fileToUpload">
-                <input type="submit" value="Upload File" name="submit">
-                <span class="help-block"><?php echo $upload_err; ?></span> 
-            </form>
-            <a href='listExercise.php'>Back</a>
+            <div class='row'>
+                <div class='col-lg-6'>
+                    <h2><?= $row['title'] ?></h2>
+                    <p><?= $row['description'] ?></p>
+                    <p>Modified time: <?= $row['modified_time'] ?></p>
+                    <p>Deadline: <?= $row['deadline'] ?></p>
+                    <a style='color:yellow;' href='<?= $row['filePath'] ?>'>Statement</a>
+                </div>
+                <div class='col-lg-6'>
+                    <br>
+                    <form action='' method='post' enctype='multipart/form-data'>
+                        <div class='form-group'>
+                            <label for='fileToUpload'>Select file to upload:</label>
+                            <input class='form-control' type="file" name="fileToUpload" id="fileToUpload" required>
+                        </div>
+                        <input class='btn btn-success' type="submit" value="Submit homework" name="submit">
+
+                        <span class="help-block"><?php echo $upload_err; ?></span> 
+
+                    </form>
+        
+                </div>
+            </div>
+           
         </div>
-       
+       <!--<a class='btn btn-primary' href='listExercise.php'>Back</a>-->
     
     </body>
 </html>
