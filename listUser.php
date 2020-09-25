@@ -58,12 +58,21 @@ mysqli_close($db_connection);
     <div class="page-header">
         <h1>List user in this website</h1>
     </div>
-    <ul class="list-group">
-        <a href='#'><li class="list-group-item">Cras justo odio</li></a>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+    <div class="container panel-group">
+    <?php
+    while ($row = $sql_result -> fetch_assoc()) {
+        echo "
+        <div class='panel panel-success'>
+            <div class='panel-heading'>Full name: {$row['fullname']} </div>
+            <div class='panel-body'>Email: {$row['email']} </div>
+            <div class='panel-body'>Phone number: {$row['phoneNumber']} </div>
+            <div class='panel-body'>Account type: {$row['type']} </div>
+            <div class='panel-body'><a class='btn btn-danger' href='sendMsg.php?userId={$row['id']}'>Message me</a></div>
+        </div>
+        ";
+    }
+    ?>
+    </div>
+   
 </body>
 </html>

@@ -23,3 +23,8 @@ body  {
 input, textarea {
     color: #000000;
 }
+
+
+.panel-body {
+    color: black;
+  }

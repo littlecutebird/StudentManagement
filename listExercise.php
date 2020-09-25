@@ -115,8 +115,12 @@ mysqli_close($db_connection);
             echo "<a class='btn btn-success' href='submitHomework.php?homeworkId={$row['id']}'>Submit</a>";
         }
         if ($_SESSION["type"] == 'teacher') {
-//            echo "<a class='btn btn-primary' href='editExercise.php?homeworkId={$row['id']}'>Edit</a>";
-            echo "<a class='btn btn-danger' href='deleteExercise.php?homeworkId={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this homework?')\">Delete</a>";
+            echo "
+            <form class='form-inline'>
+                <a class='btn btn-primary btn-inline' href='seeSubmission.php?homeworkId={$row['id']}'>See submissions</a>
+                <a class='btn btn-danger btn-inline' href='deleteExercise.php?homeworkId={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this homework?')\">Delete exercise</a>
+            </form>
+            ";
         } 
         echo "
         </div>
