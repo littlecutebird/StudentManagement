@@ -2,8 +2,45 @@
 // Init session
 session_start();
 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
 // Start interact with database
 require_once 'db_config.php';
+
+// Teacher can edit profile of students and his own profile (all info except username)
+if ($_SESSION['type'] == 'teacher') {
+    // Check account type of user trying to edit
+    $sql_query = "SELECT type FROM account where username = ?";
+    if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
+        mysqli_stmt_bind_param($stmt, "s", $_GET['username']);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $sql_result = $stmt -> get_result();
+            $row = $sql_result ->fetch_assoc();
+            // If account trying to edit not student, that mean don't have permission to edit unless this is his own profile
+            if ($row['type'] != 'student' && $_GET['username'] != $_SESSION['username']) {
+                http_response_code(404);
+                exit("Don't have permission to edit");
+            }
+        }
+        else {
+            exit("Cannot execute get account type SQL query");
+        }
+        mysqli_stmt_close($stmt);
+    }
+}  
+
+// Student can only edit his own password, email, phoneNumber (forbid username, fullname)
+if ($_SESSION['type'] == 'student') {
+    if ($_SESSION['username'] != $_GET['username']) {
+        http_response_code(404);
+        exit("Don't have permission to edit");
+    }
+}
+
 
 $fullname = $email = $phoneNumber = '';
 $fullname_err = $email_err = $phoneNumber_err = '';
@@ -12,7 +49,7 @@ $fullname_err = $email_err = $phoneNumber_err = '';
 $sql_query = "SELECT fullname, email, phoneNumber FROM account where username = ?";
 if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
     mysqli_stmt_bind_param($stmt, "s", $param_username);
-    $param_username = $_SESSION["username"];
+    $param_username = $_GET["username"];
    
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_store_result($stmt);

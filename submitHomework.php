@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 session_start();
 
@@ -64,6 +63,7 @@ mysqli_close($db_connection);
 
 ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Submit homework</title>

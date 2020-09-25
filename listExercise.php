@@ -95,6 +95,7 @@ mysqli_close($db_connection);
     <div class="page-header">
         <h1>All exercises</h1>
     </div>
+    
     <?php
     if ($_SESSION["type"] == "teacher") {
         echo "

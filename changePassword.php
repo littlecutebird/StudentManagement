@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
 <?php
 session_start();
 
@@ -68,13 +61,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 
-
-
 mysqli_close($db_connection);
 ?>
+
+<!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>Change password</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

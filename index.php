@@ -16,8 +16,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <title>Welcome</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="styles/mycss.css">
+    <link rel="stylesheet" href="styles/rain.css">
 </head>
-<body>
+<body class="back-row-toggle">
+    <!-- Make it rain -->
+    <div class="rain front-row"></div>
+    <div class="rain back-row"></div>
+    
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -38,6 +43,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="page-header">
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     </div>
-   
+    
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script><script src="styles/rain.js"></script>
 </body>
 </html>

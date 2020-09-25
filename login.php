@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <?php
 // Init session
 session_start();
@@ -60,9 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     if (mysqli_stmt_fetch($stmt)) {
                         if (password_verify($password, $hashed_password)) {
-                            //password is correct
-                            session_start();
-                            
+
                             $_SESSION["loggedin"] = true;
                             $_SESSION["username"] = $username;
                             $_SESSION["type"] = $type;
@@ -89,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($db_connection);
 }   
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">

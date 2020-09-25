@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <?php
 exit("Do not have this function yet");
 session_start();
@@ -45,9 +43,9 @@ if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
 
 
 mysqli_close($db_connection);
-
 ?>
 
+<!DOCTYPE html>
 <html>
     <head>
         <title>Edit homework</title>

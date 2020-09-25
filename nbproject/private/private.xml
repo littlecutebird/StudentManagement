@@ -4,11 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/StudentManagement/profile.php</file>
-            <file>file:/C:/xampp/htdocs/StudentManagement/editProfile.php</file>
-            <file>file:/C:/xampp/htdocs/StudentManagement/test.php</file>
-            <file>file:/C:/xampp/htdocs/StudentManagement/register.php</file>
+            <file>file:/C:/xampp/htdocs/StudentManagement/styles/rain.css</file>
+            <file>file:/C:/xampp/htdocs/StudentManagement/img/rain/rain.css</file>
+            <file>file:/C:/xampp/htdocs/StudentManagement/db_config.php</file>
+            <file>file:/C:/xampp/htdocs/StudentManagement/sendMsg.php</file>
             <file>file:/C:/xampp/htdocs/StudentManagement/index.php</file>
-            <file>file:/C:/xampp/htdocs/StudentManagement/logout.php</file>
+            <file>file:/C:/xampp/htdocs/StudentManagement/styles/mycss.css</file>
             <file>file:/C:/xampp/htdocs/StudentManagement/login.php</file>
         </group>
     </open-files>

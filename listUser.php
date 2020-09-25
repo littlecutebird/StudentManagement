@@ -12,7 +12,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 require_once 'db_config.php';
 
 // Get info of all user in table account
-$sql_query = 'SELECT * FROM account';
+$sql_query = 'SELECT * FROM account ORDER BY type';
 if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
      
         // Execute SQL statement
@@ -33,7 +33,7 @@ mysqli_close($db_connection);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>List user</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel='stylesheet' href='styles/mycss.css'>
 </head>
@@ -58,6 +58,19 @@ mysqli_close($db_connection);
     <div class="page-header">
         <h1>List user in this website</h1>
     </div>
+    
+    <?php
+    if ($_SESSION["type"] == "teacher") {
+        echo "
+        <div class='container'>
+            <a class='btn btn-success' href='register.php'>Add new student</a>
+        </div>
+        <br>
+        ";
+    }
+    ?>
+    
+    <!--List of user -->
     <div class="container panel-group">
     <?php
     while ($row = $sql_result -> fetch_assoc()) {
@@ -67,7 +80,17 @@ mysqli_close($db_connection);
             <div class='panel-body'>Email: {$row['email']} </div>
             <div class='panel-body'>Phone number: {$row['phoneNumber']} </div>
             <div class='panel-body'>Account type: {$row['type']} </div>
-            <div class='panel-body'><a class='btn btn-danger' href='sendMsg.php?userId={$row['id']}'>Message me</a></div>
+            <div class='panel-body'>
+                <a class='btn btn-info' href='sendMsg.php?userId={$row['id']}'>Message me</a>
+        ";
+        if ($_SESSION["type"] == "teacher") {
+        echo "
+                <button class='btn btn-danger' style='float:right;' onclick=\"return confirm('Are you sure you want to delete this account?')\"><a style='color:white' href='deleteAccount.php?username={$row['username']}'>Delete account</a></button>
+                <a class='btn btn-primary' href='editProfile.php?username={$row['username']}' style='float:right'>Edit profile</a>
+        ";
+        }
+        echo "
+            </div>
         </div>
         ";
     }
