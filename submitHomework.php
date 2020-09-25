@@ -96,11 +96,13 @@ mysqli_close($db_connection);
         <div class='container'>
             <div class='row'>
                 <div class='col-lg-6'>
-                    <h2><?= $row['title'] ?></h2>
-                    <p><?= $row['description'] ?></p>
-                    <p>Modified time: <?= $row['modified_time'] ?></p>
-                    <p>Deadline: <?= $row['deadline'] ?></p>
-                    <a style='color:yellow;' href='<?= $row['filePath'] ?>'>Statement</a>
+                    <div class='panel panel-primary'>
+                        <div class="panel-heading"><?= $row['title'] ?></div>
+                        <div class="panel-body"><i><?= $row['description'] ?></i></div>
+                        <div class='panel-body'>Last modified time: <?= $row['modified_time'] ?></div>
+                        <div class='panel-body'>Deadline: <?= $row['deadline'] ?></div>
+                        <div class='panel-body'><a class='btn btn-warning' href='<?= $row['filePath'] ?>'>Statement</a></div>
+                    </div>
                 </div>
                 <div class='col-lg-6'>
                     <br>
