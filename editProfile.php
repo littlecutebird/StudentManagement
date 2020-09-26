@@ -88,7 +88,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($fullname_err) && empty($email_err) && empty($phoneNumber_err)) {
         $sql_query = "UPDATE account SET fullname = ?, email = ?, phoneNumber = ? where username = ?";
         if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
-            mysqli_stmt_bind_param($stmt, "ssss", $_POST["fullname"], $_POST["email"], $_POST["phoneNumber"], $_SESSION["username"]);
+            // Only teacher can edit full name
+            if ($_SESSION['type'] == 'teacher') {
+                $newFullname = $_POST['fullname'];
+            }
+            else $newFullname = $fullname;
+            mysqli_stmt_bind_param($stmt, "ssss", $newFullname, $_POST["email"], $_POST["phoneNumber"], $_GET["username"]);
             
             $update_success = false;
             if (mysqli_stmt_execute($stmt)) {
@@ -139,12 +144,18 @@ mysqli_close($db_connection);
         <h1>Edit profile</h1>
     </div>
     <div class="container">
-        <form action="editProfile.php" method="post">
-            <div class="form-group">
+        <form action="" method="post">
+            <?php
+            if ($_SESSION['type'] == 'teacher') {
+            echo "
+            <div class='form-group'>
                 <label>Full name: </label>
-                <input class="form-control" type="text" name="fullname" value="<?php echo $fullname;?>">
-                <span class="help-block"><?php echo $fullname_err; ?></span>
+                <input class='form-control' type='text' name='fullname' value='$fullname'>
+                <span class='help-block'><?php echo $fullname_err; ?></span>
             </div>
+            ";
+            }
+            ?>
             <div class="form-group">
                 <label>Email: </label>
                 <input class="form-control" type="email" name="email" value="<?php echo $email;?>">
@@ -159,7 +170,7 @@ mysqli_close($db_connection);
         </form>
          <?php
             if (isset($update_success) && $update_success) {
-                echo '<h2>Update success</h2>';
+                echo '<h2>Update success. Refresh get back to profile page to see update info.</h2>';
             }
          ?>
     </div>

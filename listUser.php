@@ -81,7 +81,7 @@ mysqli_close($db_connection);
             <div class='panel-body'>Phone number: {$row['phoneNumber']} </div>
             <div class='panel-body'>Account type: {$row['type']} </div>
             <div class='panel-body'>
-                <a class='btn btn-info' href='sendMsg.php?userId={$row['id']}'>Message me</a>
+                <a class='btn btn-info' href='sendMsg.php?userId={$row['id']}#bottomPage'>Message me</a>
         ";
         if ($_SESSION["type"] == "teacher") {
         echo "

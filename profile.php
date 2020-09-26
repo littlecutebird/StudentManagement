@@ -72,8 +72,8 @@ mysqli_close($db_connection);
     </div>
 
     <div class="container">
-        <a href="editProfile.php" class="btn btn-primary">Edit profile</a>
-        <a href="changePassword.php" class="btn btn-info">Change password</a>
+        <a href="editProfile.php?username=<?= $_SESSION['username']?>" class="btn btn-primary">Edit profile</a>
+        <a href="changePassword.php?username" class="btn btn-info">Change password</a>
     </div>
 
 </body>
