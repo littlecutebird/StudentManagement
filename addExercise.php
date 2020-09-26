@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 session_start();
 
@@ -40,10 +39,10 @@ if (empty($upload_err) && isset($_POST["submit"])) {
 mysqli_close($db_connection);
 
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Submit homework</title>
+        <title>Add homework</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

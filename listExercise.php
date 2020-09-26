@@ -95,35 +95,50 @@ mysqli_close($db_connection);
     <div class="page-header">
         <h1>All exercises</h1>
     </div>
+    
+   
     <?php
     if ($_SESSION["type"] == "teacher") {
         echo "
         <div class='container'>
         <a class='btn btn-success' href='addExercise.php'>Add new homework</a>
         </div>
+        <br>
         ";
     }
+    ?>
+    <!--List of homework -->
+    <div class="container panel-group">
+        
+    <?php
     while ($row = $homework_sql_result ->fetch_assoc()) {
         echo " 
-        <div class='container'>
-            <h2>{$row['title']}</h2>
-            <p>Deadline: {$row['deadline']}</p>
+        <div class='panel panel-primary'>
+            <div class='panel-heading'>{$row['title']}</div>
+            <div class='panel-body'>Deadline: {$row['deadline']}</div>
         ";
         if ($_SESSION["type"] == "student") {
             $status = isset($submitStatus[$row['id']]) ?'Submitted':'Not done';
-            echo "<p>Status: $status</p>";
-            echo "<a class='btn btn-success' href='submitHomework.php?homeworkId={$row['id']}'>Submit</a>";
+            echo "<div class='panel-body'>Status: $status</div>";
+            echo "<div class='panel-body'><a class='btn btn-success' href='submitHomework.php?homeworkId={$row['id']}'>Submit</a></div>";
         }
         if ($_SESSION["type"] == 'teacher') {
-//            echo "<a class='btn btn-primary' href='editExercise.php?homeworkId={$row['id']}'>Edit</a>";
-            echo "<a class='btn btn-danger' href='deleteExercise.php?homeworkId={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this homework?')\">Delete</a>";
+            echo "
+            <div class='panel-body'>
+                <form class='form-inline'>
+                    <a class='btn btn-info btn-inline' href='seeSubmission.php?homeworkId={$row['id']}'>See submissions</a>
+                    <a class='btn btn-danger btn-inline' href='deleteExercise.php?homeworkId={$row['id']}' onclick=\"return confirm('Are you sure you want to delete this homework?')\">Delete exercise</a>
+                </form>
+            </div>
+            ";
         } 
         echo "
         </div>
         ";
     }
     ?>
-   
+    
+    </div>
 
 </body>
 </html>

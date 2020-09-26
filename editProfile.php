@@ -2,8 +2,45 @@
 // Init session
 session_start();
 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
 // Start interact with database
 require_once 'db_config.php';
+
+// Teacher can edit profile of students and his own profile (all info except username)
+if ($_SESSION['type'] == 'teacher') {
+    // Check account type of user trying to edit
+    $sql_query = "SELECT type FROM account where username = ?";
+    if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
+        mysqli_stmt_bind_param($stmt, "s", $_GET['username']);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $sql_result = $stmt -> get_result();
+            $row = $sql_result ->fetch_assoc();
+            // If account trying to edit not student, that mean don't have permission to edit unless this is his own profile
+            if ($row['type'] != 'student' && $_GET['username'] != $_SESSION['username']) {
+                http_response_code(404);
+                exit("Don't have permission to edit");
+            }
+        }
+        else {
+            exit("Cannot execute get account type SQL query");
+        }
+        mysqli_stmt_close($stmt);
+    }
+}  
+
+// Student can only edit his own password, email, phoneNumber (forbid username, fullname)
+if ($_SESSION['type'] == 'student') {
+    if ($_SESSION['username'] != $_GET['username']) {
+        http_response_code(404);
+        exit("Don't have permission to edit");
+    }
+}
+
 
 $fullname = $email = $phoneNumber = '';
 $fullname_err = $email_err = $phoneNumber_err = '';
@@ -12,7 +49,7 @@ $fullname_err = $email_err = $phoneNumber_err = '';
 $sql_query = "SELECT fullname, email, phoneNumber FROM account where username = ?";
 if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
     mysqli_stmt_bind_param($stmt, "s", $param_username);
-    $param_username = $_SESSION["username"];
+    $param_username = $_GET["username"];
    
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_store_result($stmt);
@@ -51,7 +88,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($fullname_err) && empty($email_err) && empty($phoneNumber_err)) {
         $sql_query = "UPDATE account SET fullname = ?, email = ?, phoneNumber = ? where username = ?";
         if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
-            mysqli_stmt_bind_param($stmt, "ssss", $_POST["fullname"], $_POST["email"], $_POST["phoneNumber"], $_SESSION["username"]);
+            // Only teacher can edit full name
+            if ($_SESSION['type'] == 'teacher') {
+                $newFullname = $_POST['fullname'];
+            }
+            else $newFullname = $fullname;
+            mysqli_stmt_bind_param($stmt, "ssss", $newFullname, $_POST["email"], $_POST["phoneNumber"], $_GET["username"]);
             
             $update_success = false;
             if (mysqli_stmt_execute($stmt)) {
@@ -102,12 +144,18 @@ mysqli_close($db_connection);
         <h1>Edit profile</h1>
     </div>
     <div class="container">
-        <form action="editProfile.php" method="post">
-            <div class="form-group">
+        <form action="" method="post">
+            <?php
+            if ($_SESSION['type'] == 'teacher') {
+            echo "
+            <div class='form-group'>
                 <label>Full name: </label>
-                <input class="form-control" type="text" name="fullname" value="<?php echo $fullname;?>">
-                <span class="help-block"><?php echo $fullname_err; ?></span>
+                <input class='form-control' type='text' name='fullname' value='$fullname'>
+                <span class='help-block'><?php echo $fullname_err; ?></span>
             </div>
+            ";
+            }
+            ?>
             <div class="form-group">
                 <label>Email: </label>
                 <input class="form-control" type="email" name="email" value="<?php echo $email;?>">
@@ -122,7 +170,7 @@ mysqli_close($db_connection);
         </form>
          <?php
             if (isset($update_success) && $update_success) {
-                echo '<h2>Update success</h2>';
+                echo '<h2>Update success. Refresh get back to profile page to see update info.</h2>';
             }
          ?>
     </div>

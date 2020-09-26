@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
 <?php
 // Init session
 session_start();
@@ -12,6 +5,9 @@ session_start();
 // Start interact with database
 require_once 'db_config.php';
 
+if ($_SESSION['username'] != $_GET['username']) {
+    exit("Why you here I don't allow you!");
+}
 $sql_query = "SELECT fullname, email, phoneNumber, type FROM account where username = ?";
 if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
     mysqli_stmt_bind_param($stmt, "s", $param_username);
@@ -66,17 +62,18 @@ mysqli_close($db_connection);
     <div class="page-header">
         <h1>My profile</h1>
     </div>
-    <div class="container">
-        <h1>Profile</h1>
-        <p>Full name: <?php echo $fullname; ?></p>
-        <p>Email: <?php echo $email; ?></p>
-        <p>Phone number: <?php echo $phonenumber; ?></p>
-        <p>Account type: <?php echo $type; ?></p>
+    <div class='container'>
+        <div class="panel panel-success">
+            <div class="panel-heading">Full name: <?php echo $fullname; ?></div>
+            <div class="panel-body">Email: <?php echo $email; ?></div>
+            <div class="panel-body">Phone number: <?php echo $phonenumber; ?></div>
+            <div class="panel-body">Account type: <?php echo $type; ?></div>
+        </div>
     </div>
-    
+
     <div class="container">
-        <a href="editProfile.php" class="btn btn-primary">Edit profile</a>
-        <a href="changePassword.php" class="btn btn-info">Change password</a>
+        <a href="editProfile.php?username=<?= $_SESSION['username']?>" class="btn btn-primary">Edit profile</a>
+        <a href="changePassword.php?username" class="btn btn-info">Change password</a>
     </div>
 
 </body>

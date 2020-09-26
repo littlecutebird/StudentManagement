@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <?php
 // Init session
 session_start();
@@ -41,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare SQL statement
-        $sql_query = "SELECT id, username, password, type FROM account where username = ?";
+        $sql_query = "SELECT id, username, password, type, fullname FROM account where username = ?";
         
         if ($stmt = mysqli_prepare($db_connection, $sql_query)) {
             // Bind variables to prepared SQL statement
@@ -56,17 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // If username exist, verify password
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $type);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $type, $fullname);
                     
                     if (mysqli_stmt_fetch($stmt)) {
                         if (password_verify($password, $hashed_password)) {
-                            //password is correct
-                            session_start();
-                            
+
                             $_SESSION["loggedin"] = true;
                             $_SESSION["username"] = $username;
                             $_SESSION["type"] = $type;
                             $_SESSION["id"] = $id;
+                            $_SESSION['fullname'] = $fullname;
                             
                             header("location: index.php");
                         }
@@ -89,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($db_connection);
 }   
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
